@@ -388,6 +388,7 @@ TEST_CASE("Comparing SideCrossIterator") {
         CHECK_FALSE((itStart1 > itStart1));
         CHECK_FALSE((itStart1 < itStart1));
     }
+
 }
 
 //---------------------------------------------------

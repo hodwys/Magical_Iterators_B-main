@@ -4,6 +4,7 @@
 #include <vector>
 #include <cmath>
 #include <stdexcept>
+#include <algorithm>
 using namespace std;
 namespace ariel{
 
@@ -11,7 +12,7 @@ namespace ariel{
     class MagicalContainer{
 
         vector<int> mystical_elements;
-        vector<int*> prime_vector = {};
+        vector<int*> prime_vector;
 
         bool static is_prime(int num){
             if(num == 2 || num==3){
@@ -60,8 +61,18 @@ namespace ariel{
                         mystical_elements.erase(i);
                         i--;
                         remov = true;
+                        if(is_prime(num_to_remove)){
+                            int* elementToRemove = &num_to_remove;
+                            auto it = std::find(prime_vector.begin(), prime_vector.end(), elementToRemove);
+                            prime_vector.erase(it);
+                            delete elementToRemove;
+                            // prime_vector.erase(&num_to_remove);
+                        }
+
                     }
                 }
+                sort(prime_vector.begin() , prime_vector.end());
+                sort(mystical_elements.begin(),mystical_elements.end());
                 if(!remov){
                     throw runtime_error("imposible to remov");
 
@@ -76,10 +87,9 @@ namespace ariel{
                 return mystical_elements;
             }
 
-            const vector<int*> get_prime() const{
+            const vector<int*>& get_prime() const{
                 return prime_vector;
             }
-
 
             ~MagicalContainer()= default; 
             MagicalContainer (const MagicalContainer &other){}
@@ -219,11 +229,11 @@ namespace ariel{
                 }
 
 
-                  MagicalContainer::PrimeIterator& begin() {
+                PrimeIterator& begin() {
                     this->curr_index = 0;
                     return *this;
                 }
-                 MagicalContainer::PrimeIterator end(){
+                PrimeIterator end(){
                     this->curr_index = container.get_prime().size();
                     return *this; 
                 }
