@@ -30,15 +30,10 @@ namespace ariel{
         }
 
         public:
-            // void set_mystical_elements(vector<int>& container){
-            //   mystical_elements = container;
-            // }
-
 
             bool operator==(const MagicalContainer& other) const {
                 return mystical_elements == other.mystical_elements;
             }
-
 
             MagicalContainer(){}
 
@@ -86,8 +81,6 @@ namespace ariel{
             }
 
 
-            
-
             ~MagicalContainer()= default; 
             MagicalContainer (const MagicalContainer &other){}
 
@@ -119,22 +112,23 @@ namespace ariel{
                  
                 MagicalContainer &container;
                 //vector<MagicalContainer*> &container;
-                int curr_index = 0;
+                size_t curr_index;
 
                 public:
-                AscendingIterator(MagicalContainer &container): container(container){
+                AscendingIterator(MagicalContainer &container): container(container), curr_index(0){
                 }
 
                 AscendingIterator begin(){
-                    return AscendingIterator(container);
+                    this ->curr_index = 0;
+                    return *this;
                 }
                 AscendingIterator end(){
-                    this->curr_index = container.size();
+                    this->curr_index = container.get_vector().size();
                     return *this;
                 }
     
                     int& operator*() const {
-                        return container.get_vector()[static_cast<vector<int>::size_type>(curr_index)];
+                        return container.get_vector()[(curr_index)];
                     }
     
 
@@ -147,41 +141,61 @@ namespace ariel{
 
                     // Copy assignment operator
                     AscendingIterator& operator=(const AscendingIterator& other) {
+                        if(this->container != other.container){
+                            throw runtime_error (" not the same iterator");
+                        }
+                        
                         if (this != &other){
                             *this = other.container;
+                            this->curr_index = other.curr_index;
                         }
                         return *this;
                     }
 
                         // Move constructor
-                        AscendingIterator(AscendingIterator&& other) noexcept : container(other.container) {
+                        AscendingIterator(AscendingIterator&& other) noexcept : container(other.container), curr_index(other.curr_index) {
                         }
 
                     // Move assignment operator
                     AscendingIterator& operator=(AscendingIterator&& other) noexcept {
+
                         if (this != &other){
-                            return *this = other.container;
+                            this->container = move(other.container);
+                            this->curr_index = other.curr_index;
+                            return *this;
                         }
 
                         return *this;
                     }
                  
          
-                    AscendingIterator operator++(){
-                        AscendingIterator temp(*this);  // Create a copy of the current object
-                        curr_index++;                   // Increment the index
-                        return temp;                    // Return the copy
+                    AscendingIterator& operator++(){
+                        if(curr_index == this->container.get_vector().size()){
+                            throw runtime_error("in the end");
+                        }
+                        this->curr_index++;
+                        return *this;
                     }
 
                     bool operator==(const AscendingIterator& other_iterator) const {
-                        return curr_index == other_iterator.curr_index;
+                        if(this->container == other_iterator.container){
+                            bool eqa = (curr_index == other_iterator.curr_index);
+                            return eqa;
+                        }
+                            return false;
                     }
 
                     bool operator!=(const AscendingIterator& other_iterator) const {
                         return !(curr_index == other_iterator.curr_index);
                     }
 
+                    bool operator>(const AscendingIterator& other_iterator) const{
+                        return (this->curr_index > other_iterator.curr_index);
+                     }
 
+                    bool operator<(const AscendingIterator& other_iterator) const{
+                        return (this->curr_index < other_iterator.curr_index);
+                     }
             };
 
 
@@ -189,8 +203,6 @@ namespace ariel{
 
                 int curr_index =0;
                 MagicalContainer &container;
-
-
 
                 public:
 
@@ -220,19 +232,22 @@ namespace ariel{
 //Copy constructor
                 PrimeIterator(const PrimeIterator& other_container) : container(other_container.container) ,curr_index( other_container.curr_index ){} //Copy constructor
 
-                int &operator*() const {
+                int& operator*() const {
                    // cout<<"rgrh"<<endl;
                     return *(container.get_prime()[static_cast<vector<int>::size_type>(curr_index)]);
                 }
 
                 PrimeIterator operator++(){
                     // Increment the index
-                    PrimeIterator temp(*this);
-                    curr_index++;
-                    return temp;
+                    if(curr_index == this->container.get_prime().size()){
+                        throw runtime_error("in the end");
+                    }
+                    this->curr_index++;
+                    return *this;
                 }
 
                 bool operator==(const PrimeIterator& other) const{
+
                     return curr_index == other.curr_index;
                 }
 
@@ -249,24 +264,40 @@ namespace ariel{
 
                 // Copy assignment operator
                 PrimeIterator& operator=(const PrimeIterator& other) {
+                    if(this->container != other.container){
+                        throw runtime_error (" not the same iterator");
+                    }
                     if (this != &other){
                         *this = other.container;
+                        this->curr_index = other.curr_index;
                     }
                  
                     return *this;
                 }
 
                 // Move constructor
-                PrimeIterator(PrimeIterator&& other) noexcept: container(other.container){
+                PrimeIterator(PrimeIterator&& other) noexcept: container(other.container), curr_index(other.curr_index){
                 }
 
                 // Move assignment operator
                 PrimeIterator& operator=(PrimeIterator&& other) noexcept {
+                 
                     if (this != &other){
                         *this = other.container;
+                        this->curr_index = other.curr_index;
                     }
 
                     return *this;
+                }
+
+
+                
+                bool operator>(const PrimeIterator& other_iterator) const{
+                    return (this->curr_index > other_iterator.curr_index);
+                }
+
+                bool operator<(const PrimeIterator& other_iterator) const{
+                    return (this->curr_index < other_iterator.curr_index);
                 }
             };
 
@@ -351,6 +382,10 @@ namespace ariel{
 
             SideCrossIterator& operator++(){
                 // Increment the index
+                if(curr_right ==  0 && curr_left == this->container.get_vector().size()){
+                    throw runtime_error("in the end");
+                }
+
                 if(get_right()){
                     set_right(false);
                     set_left(true);
@@ -386,6 +421,12 @@ namespace ariel{
 
                 // Copy assignment operator
                 SideCrossIterator& operator=(const SideCrossIterator& other) {
+                    if(this->container != other.container){
+                        throw runtime_error (" not the same iterator");
+                    }
+                    if(this->container != other.container){
+                        throw runtime_error (" not the same iterator");
+                    }
                     if (this != &other){
                        *this = other.container;
                         curr_right = other.curr_right;
@@ -403,6 +444,7 @@ namespace ariel{
 
                 // Move assignment operator
                 SideCrossIterator& operator=(SideCrossIterator&& other) noexcept {
+                 
                     if (this != &other){
                        *this = other.container;
                         curr_right = other.curr_right;
@@ -412,6 +454,27 @@ namespace ariel{
                     }
                     return *this;
                 }
+
+                bool operator>(const SideCrossIterator& other_iterator) const{
+
+                    if(right){
+                        return (this->right > other_iterator.right);
+                    }
+                    else{
+                        return (this->left > other_iterator.left);                        
+                    }
+                }
+
+                bool operator<(const SideCrossIterator& other_iterator) const{
+
+                    if(right){
+                        return (this->right < other_iterator.right);
+                    }
+                    else{
+                        return (this->left < other_iterator.left);                        
+                    }
+                }
+                
             };
     }; 
 }
