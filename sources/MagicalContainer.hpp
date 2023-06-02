@@ -24,15 +24,15 @@ namespace ariel{
 
             MagicalContainer(){}
 
-             void addElement(int num_to_add);
+            void addElement(int num_to_add);
 
-             void removeElement(int num_to_remove);
+            void removeElement(int num_to_remove);
 
             int size();
 
             vector<int>& get_vector();
 
-             const vector<int*>& get_prime();
+            const vector<int*>& get_prime();
 
             ~MagicalContainer()= default; 
             MagicalContainer (const MagicalContainer &other){}
@@ -46,7 +46,6 @@ namespace ariel{
 
                 // Move constructor
                 MagicalContainer(MagicalContainer&& other) noexcept {
-                // Move constructor implementation
                 }
 
                 // Move assignment operator
@@ -110,8 +109,8 @@ namespace ariel{
                 AscendingIterator& operator=(AscendingIterator&& other) noexcept {
 
                     if (this != &other){
-                        this->curr_index = other.curr_index;
                         this->container = move(other.container);
+                        this->curr_index = other.curr_index;
                         return *this;
                     }
                     return *this;
@@ -162,7 +161,7 @@ namespace ariel{
                     this->curr_index = 0;
                     return *this;
                 }
-                PrimeIterator end(){
+                PrimeIterator& end(){
                     this->curr_index = static_cast<int>(container.get_prime().size());
                     return *this; 
                 }
@@ -216,8 +215,8 @@ namespace ariel{
                 PrimeIterator& operator=(PrimeIterator&& other) noexcept {
                  
                     if (this != &other){
-                        this->curr_index = other.curr_index;
                         this->container = move(other.container);
+                        this->curr_index = other.curr_index;
                     }
                     return *this;
                 }
@@ -328,11 +327,11 @@ namespace ariel{
                     SideCrossIterator& operator=(SideCrossIterator&& other) noexcept {
                     
                         if (this != &other){
+                            this->container = move(other.container);
                             curr_right = other.curr_right;
                             curr_left = other.curr_left;
                             right = other.right;
                             left = other.left;
-                            this->container = move(other.container);
                         }
                         return *this;
                     }

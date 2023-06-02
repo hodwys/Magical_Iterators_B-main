@@ -100,7 +100,7 @@ TEST_CASE("SideCrossIterator") {
     }
 }
 
-//Test case for the PrimeIterator
+// Test case for the PrimeIterator
 TEST_CASE("PrimeIterator") {
     MagicalContainer container;
     container.addElement(1);
@@ -188,7 +188,7 @@ TEST_CASE("Traversing AscendingIterator") {
     }
 }
 
-//Test case for traversing the PrimeIterator
+// Test case for traversing the PrimeIterator
 TEST_CASE("Traversing PrimeIterator") {
     MagicalContainer container;
     container.addElement(1);
@@ -304,7 +304,7 @@ TEST_CASE("Comparing AscendingIterator") {
 }
 
 
-//Test case for comparing PrimeIterator
+// Test case for comparing PrimeIterator
 TEST_CASE("Comparing PrimeIterator") {
     MagicalContainer container;
     container.addElement(1);
@@ -352,7 +352,7 @@ TEST_CASE("Comparing PrimeIterator") {
 }
 
 
-//Test case for comparing SideCrossIterator
+// Test case for comparing SideCrossIterator
 TEST_CASE("Comparing SideCrossIterator") {
     MagicalContainer container;
     container.addElement(1);
@@ -388,9 +388,7 @@ TEST_CASE("Comparing SideCrossIterator") {
         CHECK_FALSE((itStart1 > itStart1));
         CHECK_FALSE((itStart1 < itStart1));
     }
-
 }
-
 //---------------------------------------------------
 TEST_CASE("Iterator Increment Beyond End") {
     MagicalContainer container;
@@ -578,32 +576,22 @@ TEST_CASE("operator= throws when iterators are pointing at different containers"
    SUBCASE("AscendingIterator")
    {
         MagicalContainer::AscendingIterator it1(container1);
-        cout<<"it1(container1);"<<endl;
         MagicalContainer::AscendingIterator it2(container2);
-        cout<<"it2(container2)"<<endl;
 
         CHECK_THROWS_AS(it1 = it2, std::runtime_error);
    }
    SUBCASE("SideCrossIterator")
    {
         MagicalContainer::SideCrossIterator it1(container1);
-        cout<<"it1(container1) 589;"<<endl;
-
         MagicalContainer::SideCrossIterator it2(container2);
-        cout<<"it1(container2 592);"<<endl;
 
         CHECK_THROWS_AS(it1 = it2, std::runtime_error);
    }
    SUBCASE("AscendingIterator")
    {
         MagicalContainer::PrimeIterator it1(container1);
-            cout<<"it1(container1 599);"<<endl;
-
         MagicalContainer::PrimeIterator it2(container2);
-        cout<<"it1(container2 602);"<<endl;
 
         CHECK_THROWS_AS(it1 = it2, std::runtime_error);
    }
 }
-
-
