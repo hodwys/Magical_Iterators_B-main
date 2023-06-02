@@ -29,6 +29,13 @@ namespace ariel{
             return true;
 
         }
+        // void sort_prime(int * start, int* end){
+        //   while (start<= end)
+        //   {
+            
+        //   }
+          
+        // }
 
         public:
 
@@ -47,12 +54,29 @@ namespace ariel{
 
                 mystical_elements.push_back(num_to_add);
 
+
                 if(is_prime(num_to_add)){
-                    prime_vector.push_back(&num_to_add);
+                    //prime_vector.push_back(&num_to_add);
+
+                    int *pointer = new int(num_to_add);
+                    prime_vector.push_back( pointer );
+
                 }
-                sort(prime_vector.begin() , prime_vector.end());
                 sort(mystical_elements.begin(),mystical_elements.end());
+                sort(prime_vector.begin(), prime_vector.end(), [](int* a, int* b) {return *a < *b;});
             }
+
+
+
+
+// void MagicalContainer::addElement(int num) {
+//     auto it = std::lower_bound(container.begin(), container.end(), num);
+//     container.insert(it, num);
+//     if(isPrime(num))
+//     {
+
+//     }
+// }
 
             void removeElement(int num_to_remove){
                 bool remov =  false;
@@ -71,8 +95,8 @@ namespace ariel{
 
                     }
                 }
-                sort(prime_vector.begin() , prime_vector.end());
-                sort(mystical_elements.begin(),mystical_elements.end());
+                // sort(mystical_elements.begin(),mystical_elements.end());
+                // sort(prime_vector.begin(), prime_vector.end(), [](int* a, int* b) {return *a < *b;});
                 if(!remov){
                     throw runtime_error("imposible to remov");
 
@@ -87,7 +111,8 @@ namespace ariel{
                 return mystical_elements;
             }
 
-            const vector<int*>& get_prime() const{
+            const vector<int*>& get_prime(){
+                //sort(prime_vector.begin() , prime_vector.end());
                 return prime_vector;
             }
 
@@ -211,12 +236,12 @@ namespace ariel{
 
             class PrimeIterator{
 
-                int curr_index =0;
+                int curr_index;
                 MagicalContainer &container;
 
                 public:
 
-                PrimeIterator(MagicalContainer &container): container(container){
+                PrimeIterator(MagicalContainer &container): container(container), curr_index(0){
                     // vector<int> is_prime_vector ={};
                     // for(size_t i = 0; i<container.size(); i++){
                     //     if(is_prime(container.get_vector()[i])){
@@ -247,7 +272,7 @@ namespace ariel{
                     return *(container.get_prime()[static_cast<vector<int>::size_type>(curr_index)]);
                 }
 
-                PrimeIterator operator++(){
+                PrimeIterator& operator++(){
                     // Increment the index
                     if(curr_index == this->container.get_prime().size()){
                         throw runtime_error("in the end");
