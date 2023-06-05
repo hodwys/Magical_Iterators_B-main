@@ -127,6 +127,7 @@ namespace ariel{
 
                 virtual highIterator& end(){
                     this ->curr_index =int( this->container.get_vector().size());
+                    this->set_curr_right(0);
                     return *this;
                 }
                 virtual int& operator*() = 0;
@@ -188,11 +189,6 @@ namespace ariel{
                         this ->set_curr_index(0);
                         return *this;
                     }
-                    
-                    AscendingIterator& end() override{
-                        this->set_curr_index(int(this->get_container().get_vector().size()));
-                        return *this;
-                    }
 
                     int& operator*() override{
                         return this->get_container().get_vector()[static_cast<vector<int>::size_type>(this->get_curr_index())];
@@ -240,7 +236,7 @@ namespace ariel{
                         return *this;
                     }
             };
-// ///////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
             class SideCrossIterator :public highIterator{
 
                 public:
@@ -249,14 +245,9 @@ namespace ariel{
                     }
             
                     SideCrossIterator& begin() override {
-                    this->set_curr_right(static_cast<int> (get_container().get_vector().size()-1));
+                        this->set_curr_right(static_cast<int> (get_container().get_vector().size()-1));
                         this->set_curr_index(0);
                         return *this;
-                    }
-                    SideCrossIterator& end() override{
-                    this->set_curr_index(static_cast<int>(get_container().get_vector().size()));
-                        this->set_curr_right(0);
-                        return *this;        
                     }
 
                     int& operator*() override{
