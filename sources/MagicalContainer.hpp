@@ -4,17 +4,17 @@
 #include <vector>
 #include <cmath>
 #include <stdexcept>
+#include <stdio.h>
 #include <algorithm>
 using namespace std;
 namespace ariel{
-
 
     class MagicalContainer{
 
         vector<int> mystical_elements;
         vector<int*> prime_vector;
 
-         bool static is_prime(int num);
+        bool static is_prime(int num);
 
         public:
 
@@ -56,301 +56,242 @@ namespace ariel{
                     return *this;
                 }
                 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            class AscendingIterator{
-                 
+            class highIterator{
+
                 MagicalContainer &container;
-                size_t curr_index;
-
-                public:
-                AscendingIterator(MagicalContainer &container): container(container), curr_index(0){
-                }
-            
-                AscendingIterator begin(){
-                    this ->curr_index = 0;
-                    return *this;
-                }
-                AscendingIterator end(){
-                    this->curr_index = container.get_vector().size();
-                    return *this;
-                }
-
-                //Destructor
-                ~AscendingIterator() = default;
-
-                // Copy constructor
-                AscendingIterator(const AscendingIterator& other) :container(other.container),curr_index(other.curr_index){
-                }
-
-                int& operator*() const {
-                    return container.get_vector()[(curr_index)];
-                }
-
-                // Copy assignment operator
-                AscendingIterator& operator=(const AscendingIterator& other) {
-                    if(this->container != other.container){
-                        throw runtime_error (" not the same iterator");
-                    }
-                    if (this != &other){
-                        *this = other.container;
-                        this->curr_index = other.curr_index;
-                    }
-                    return *this;
-                }
-
-                    // Move constructor
-                    AscendingIterator(AscendingIterator&& other) noexcept : container(other.container), curr_index(other.curr_index) {
-                    }
-
-                // Move assignment operator
-                AscendingIterator& operator=(AscendingIterator&& other) noexcept {
-
-                    if (this != &other){
-                        this->container = move(other.container);
-                        this->curr_index = other.curr_index;
-                        return *this;
-                    }
-                    return *this;
-                }
-                 
-                AscendingIterator& operator++(){
-                    if(curr_index == this->container.get_vector().size()){
-                        throw runtime_error("in the end");
-                    }
-                    this->curr_index++;
-                    return *this;
-                }
-
-                bool operator==(const AscendingIterator& other_iterator) const {
-                    if(this->container == other_iterator.container){
-                        bool eqa = (curr_index == other_iterator.curr_index);
-                        return eqa;
-                    }
-                        return false;
-                }
-
-                bool operator!=(const AscendingIterator& other_iterator) const {
-                    return !(curr_index == other_iterator.curr_index);
-                }
-
-                bool operator>(const AscendingIterator& other_iterator) const{
-                    return (this->curr_index > other_iterator.curr_index);
-                    }
-
-                bool operator<(const AscendingIterator& other_iterator) const{
-                    return (this->curr_index < other_iterator.curr_index);
-                    }
-            };
-/////////////////////////////////////////////////////////////////////////////////////////
-
-            class PrimeIterator{
-
                 int curr_index;
-                MagicalContainer &container;
+                // for cross
+                int curr_right;
+                bool right;
+                bool left;
 
                 public:
 
-                PrimeIterator(MagicalContainer &container): container(container), curr_index(0){
+                highIterator(MagicalContainer &container): container(container), curr_index(0),curr_right(container.size()-1),right(false), left(true) {
                 }
-
-
-                PrimeIterator& begin() {
-                    this->curr_index = 0;
-                    return *this;
-                }
-                PrimeIterator& end(){
-                    this->curr_index = static_cast<int>(container.get_prime().size());
-                    return *this; 
-                }
-
-
-                //Copy constructor
-                PrimeIterator(const PrimeIterator& other_container) : container(other_container.container) ,curr_index( other_container.curr_index ){} //Copy constructor
-                 
-                 // Default destructor
-                ~PrimeIterator() = default;
-
-                int& operator*() const {
-                    return *(container.get_prime()[static_cast<vector<int>::size_type>(curr_index)]);
-                }
-
-                PrimeIterator& operator++(){
-                    if(curr_index == this->container.get_prime().size()){
-                        throw runtime_error("in the end");
-                    }
-                    this->curr_index++;
-                    return *this;
-                }
-
-                bool operator==(const PrimeIterator& other) const{
-
-                    return curr_index == other.curr_index;
-                }
-
-                bool operator!=(const PrimeIterator& other) const{
-                    return !(curr_index == other.curr_index);
-                }
+                
+                highIterator(const highIterator& other) : container(other.container), curr_index(other.curr_index) ,  curr_right(other.curr_right),right(other.right), left(other.left) {}
 
             
-                // Copy assignment operator
-                PrimeIterator& operator=(const PrimeIterator& other) {
-                    if(this->container != other.container){
-                        throw runtime_error (" not the same iterator");
-                    }
-                    if (this != &other){
-                        *this = other.container;
-                        this->curr_index = other.curr_index;
-                    }
-                    return *this;
-                }
+                virtual ~highIterator() = default;
 
                 // Move constructor
-                PrimeIterator(PrimeIterator&& other) noexcept: container(other.container), curr_index(other.curr_index){
-                }
+                highIterator(highIterator&& other) noexcept : container(other.container), curr_index(other.curr_index),curr_right(other.curr_right),right(other.right), left(other.left) {}
 
                 // Move assignment operator
-                PrimeIterator& operator=(PrimeIterator&& other) noexcept {
-                 
-                    if (this != &other){
-                        this->container = move(other.container);
-                        this->curr_index = other.curr_index;
+                highIterator& operator=(highIterator&& other) noexcept {
+                    if (this != &other) {
+                    container = std::move(other.container);
+                    curr_index = other.curr_index;
+                    curr_right = other.curr_right;
+                    right =other.right;
+                    left= other.left;
                     }
                     return *this;
                 }
 
-                bool operator>(const PrimeIterator& other_iterator) const{
-                    return (this->curr_index > other_iterator.curr_index);
+                bool get_right() const{
+                    return this->right;
+                }
+                bool get_left() const{
+                    return this->left;
+                }
+                void set_right(bool right){
+                    this->right = right;
+                }
+                void set_left(bool left){
+                    this->left = left;
                 }
 
-                bool operator<(const PrimeIterator& other_iterator) const{
-                    return (this->curr_index < other_iterator.curr_index);
+                int get_curr_index() const{
+                    return this->curr_index;
+                }
+
+                void set_curr_index(int other_index){
+                    this->curr_index = other_index;
+                }
+                int get_curr_right() const{
+                    return this->curr_right;
+                }
+
+                void set_curr_right(int other_index){
+                    this->curr_right = other_index;
+                }
+                MagicalContainer& get_container() const{
+                    return this->container;
+                }
+
+                virtual highIterator& begin()=0;
+
+                virtual highIterator& end(){
+                    this ->curr_index =int( this->container.get_vector().size());
+                    return *this;
+                }
+                virtual int& operator*() = 0;
+
+                virtual highIterator& operator++() = 0;
+
+                bool operator>(const highIterator& other_iterator) const{
+
+                    if(right){
+                        return (static_cast<int>(this->right) > static_cast<int>(other_iterator.right));
+                    }
+                    return (static_cast<int>(this->curr_index) >static_cast<int>( other_iterator.curr_index));                        
+                }
+
+                bool operator<(const highIterator& other_iterator) const{
+
+                    if(right){
+                        return (static_cast<int>(this->right) < static_cast<int>(other_iterator.right));
+                    }
+                    return (this->curr_index < other_iterator.curr_index);                        
+                }
+
+                bool operator==(const highIterator& other) const{
+                    if(typeid(*this) != typeid(other)){
+                       throw std::runtime_error("diffrent iterators error in ==");
+                    }
+
+                    return (this->curr_index == other.curr_index);
+                }
+
+                // Inequality comparison operator
+                bool operator!=(const highIterator& other) const {
+                    return !(*this == other);
+                }
+
+                // Copy assignment operator
+                highIterator& operator=(const highIterator& other) {
+
+                    if(this->container != other.get_container()){
+                        throw std::runtime_error("containers are not the same");
+                    }
+
+                    if (this != &other) {
+                        this->container = other.container;
+                        this->curr_index = other.curr_index;
+                        set_curr_right(other.get_curr_right());
+                    }
+                    return *this;
                 }
             };
-///////////////////////////////////////////////////////////////////////////////////////////
-            class SideCrossIterator{
-                 
-                MagicalContainer &container;
-                int curr_right ;
-                int curr_left;
-                bool right ;
-                bool left ;
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+            class AscendingIterator : public highIterator{
+     
                 public:
-
-                    SideCrossIterator(MagicalContainer &container): container(container), curr_right(static_cast<int>(container.get_vector().size()-1)), curr_left(0), left(true), right(false){
+                    AscendingIterator(MagicalContainer &container): highIterator(container){
                     }
-            
-                    SideCrossIterator begin() {
-                    this->curr_right =static_cast<int> (container.get_vector().size()-1);
-                        this->curr_left = 0;
+                
+                    AscendingIterator& begin() override{
+                        this ->set_curr_index(0);
                         return *this;
                     }
-                    SideCrossIterator end(){
-                    this->curr_left =  static_cast<int>(container.get_vector().size());
-                        this->curr_right =0;
-                        return *this;        
+                    
+                    AscendingIterator& end() override{
+                        this->set_curr_index(int(this->get_container().get_vector().size()));
+                        return *this;
                     }
 
-                    ~SideCrossIterator() = default;
-
-                    int& operator*(){
-
-                        if(this->right){
-
-                            return container.get_vector()[static_cast<vector<int>::size_type>(curr_right)];
-                        }
-                        return container.get_vector()[static_cast<vector<int>::size_type>(curr_left)];
+                    int& operator*() override{
+                        return this->get_container().get_vector()[static_cast<vector<int>::size_type>(this->get_curr_index())];
                     }
 
-                    SideCrossIterator& operator++(){
-                        // Increment the index
-                        if(curr_right ==  0 && curr_left == this->container.get_vector().size()){
+                    AscendingIterator& operator++() override{
+
+                        if(this->get_curr_index() == this->get_container().get_vector().size()){
                             throw runtime_error("in the end");
                         }
 
-                        if(this->right){
-                            this->right = false;
-                            this->left = true;
-                            curr_right --;
+                        this->set_curr_index(this->get_curr_index()+1);
+                        return *this;
+                    }
+
+            };
+/////////////////////////////////////////////////////////////////////////////////////////
+
+            class PrimeIterator : public highIterator {
+
+                public:
+
+                    PrimeIterator(MagicalContainer &container): highIterator(container){
+                    }
+
+                    PrimeIterator& begin() override {
+                            this->set_curr_index(0);
+                            return *this;
+                        }
+
+                    PrimeIterator& end() override{
+                        this->set_curr_index(static_cast<int>(this->get_container().get_prime().size()));
+                        return *this; 
+                    }
+
+                    int& operator*() override{
+                        return *(get_container().get_prime()[static_cast<vector<int>::size_type>(get_curr_index())]);
+                    }
+
+                    PrimeIterator& operator++() override{
+                        if(get_curr_index() == this->get_container().get_prime().size()){
+                            throw runtime_error("in the end");
+                        }
+                        this->set_curr_index(this->get_curr_index()+1);
+                        return *this;
+                    }
+            };
+// ///////////////////////////////////////////////////////////////////////////////////////////
+            class SideCrossIterator :public highIterator{
+
+                public:
+
+                    SideCrossIterator(MagicalContainer &container): highIterator(container){
+                    }
+            
+                    SideCrossIterator& begin() override {
+                    this->set_curr_right(static_cast<int> (get_container().get_vector().size()-1));
+                        this->set_curr_index(0);
+                        return *this;
+                    }
+                    SideCrossIterator& end() override{
+                    this->set_curr_index(static_cast<int>(get_container().get_vector().size()));
+                        this->set_curr_right(0);
+                        return *this;        
+                    }
+
+                    int& operator*() override{
+
+                        if(this->get_right()){
+
+                            return get_container().get_vector()[static_cast<vector<int>::size_type>(this->get_curr_right())];
+                        }
+                        return get_container().get_vector()[static_cast<vector<int>::size_type>(this->get_curr_index())];
+                    }
+
+                    SideCrossIterator& operator++() override{
+                        // Increment the index
+                        if(get_curr_right() ==  0 && this->get_curr_index() == this->get_container().get_vector().size()){
+                            throw runtime_error("in the end");
+                        }
+
+                        if(this->get_right()){
+                            this->set_right(false);
+                            this->set_left(true);
+                            this->set_curr_right(this->get_curr_right() -1);
                         }
                         else{
-                            this->right = true; 
-                            this->left = false;
-                            curr_left++;
+                            this->set_right(true); 
+                            this->set_left(false);
+                            this->set_curr_index(this->get_curr_index()+1);
                         }
-                        if(curr_right < curr_left){
-                            curr_left = static_cast<int>(container.get_vector().size());
-                            curr_right = 0;
-                        }
-                        return *this;
-                    }
-
-                    bool operator==(const SideCrossIterator& other) const{
-                        if(this->container == other.container){
-                            bool eqa = (curr_right == other.curr_right) && (curr_left == other.curr_left);
-                            return eqa;
-                        }
-                        return false;
-                    }
-
-                    // Copy constructor
-                    SideCrossIterator(const SideCrossIterator& other): container(other.container), curr_left(other.curr_left), curr_right(other.curr_right), right(other.right), left(other.left) {
-                    }
-
-                    // Copy assignment operator
-                    SideCrossIterator& operator=(const SideCrossIterator& other) {
-                        if(this->container != other.container){
-                            throw runtime_error (" not the same iterator");
-                        }
-                        if(this->container != other.container){
-                            throw runtime_error (" not the same iterator");
-                        }
-                        if (this != &other){
-                        *this = other.container;
-                            curr_right = other.curr_right;
-                            curr_left = other.curr_left;
-                            right = other.right;
-                            left = other.left;
-                        }
-
-                        return *this;
-                    }
-
-                    // Move constructor
-                    SideCrossIterator(SideCrossIterator&& other) noexcept : container(other.container), curr_left(other.curr_left), curr_right(other.curr_right), right(other.right), left(other.left){
-                    }
-
-                    // Move assignment operator
-                    SideCrossIterator& operator=(SideCrossIterator&& other) noexcept {
-                    
-                        if (this != &other){
-                            this->container = move(other.container);
-                            curr_right = other.curr_right;
-                            curr_left = other.curr_left;
-                            right = other.right;
-                            left = other.left;
+                        if(get_curr_right() < this->get_curr_index()){
+                            this->set_curr_index(static_cast<int>(get_container().get_vector().size()));
+                            this->set_curr_right(0);
                         }
                         return *this;
                     }
 
-                    bool operator>(const SideCrossIterator& other_iterator) const{
-
-                        if(right){
-                            return (static_cast<int>(this->right) > static_cast<int>(other_iterator.right));
-                        }
-                        return (static_cast<int>(this->curr_left) >static_cast<int>( other_iterator.curr_left));                        
-                    }
-
-                    bool operator<(const SideCrossIterator& other_iterator) const{
-
-                        if(right){
-                            return (static_cast<int>(this->right) < static_cast<int>(other_iterator.right));
-                        }
-                        return (this->curr_left < other_iterator.curr_left);                        
-                    }        
+        
                 };
     }; 
 }
