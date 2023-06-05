@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -30,16 +29,19 @@ namespace ariel{
                 return;
             }
         }
+        auto place =lower_bound(mystical_elements.begin(), mystical_elements.end(), num_to_add);
 
-        mystical_elements.push_back(num_to_add);
+        mystical_elements.insert( place,num_to_add);
 
         if(is_prime(num_to_add)){
+
             int *pointer_prime = new int(num_to_add);
-            prime_vector.push_back( pointer_prime );
+
+            auto place_prime = lower_bound(this->get_prime().begin(), this->get_prime().end(), pointer_prime , [](const int* firse, const int* second) { return *firse < *second; });
+
+            prime_vector.insert(  place_prime,pointer_prime );
 
         }
-        sort(mystical_elements.begin(),mystical_elements.end());
-        sort(prime_vector.begin(), prime_vector.end(), [](const int* first,const int* second) {return *first < *second;});
     }
 
 
@@ -67,7 +69,6 @@ namespace ariel{
     int MagicalContainer::size(){
         return static_cast<int>(mystical_elements.size());
     }
-
 
     vector<int>& MagicalContainer:: get_vector(){
         return mystical_elements;
