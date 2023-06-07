@@ -29,6 +29,7 @@ namespace ariel{
             void removeElement(int num_to_remove);
 
             int size();
+            void update_prime_container();
 
             vector<int>& get_vector();
 
@@ -281,8 +282,6 @@ namespace ariel{
                         }
                         return *this;
                     }
-
-        
                 };
     }; 
 }

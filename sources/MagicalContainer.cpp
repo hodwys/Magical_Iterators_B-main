@@ -44,27 +44,33 @@ namespace ariel{
         }
     }
 
-
     void MagicalContainer::removeElement(int num_to_remove){
-            bool remov =  false;
-            for(auto i= mystical_elements.begin(); i!=mystical_elements.end();i++){
-                if(*i == num_to_remove){
-                    mystical_elements.erase(i);
-                    i--;
-                    remov = true;
-                    if(is_prime(num_to_remove)){
-                        int* elementToRemove = new int(num_to_remove);
-                        auto ite = std::find(prime_vector.begin(), prime_vector.end(), elementToRemove);
-                        prime_vector.erase(ite);
-                        delete elementToRemove;
-                    }
+
+        auto iter = std::lower_bound(mystical_elements.begin(),mystical_elements.end(),num_to_remove);
+
+        if(iter == mystical_elements.end() || *iter != num_to_remove){
+            throw std::runtime_error("Elements not found");
+        }
+        mystical_elements.erase(iter);
+
+        if(is_prime(num_to_remove)){ 
+            int plase = 0;
+            for (size_t i = 0; i < prime_vector.size(); ++i) {
+                
+                if (*(prime_vector[i]) != num_to_remove) {
+                    plase++;
+                }
+                else{
+                    break;
                 }
             }
+            auto ite = prime_vector.begin() + plase;
+            delete *ite;  // Deallocate the memory for the element being removed
+            prime_vector.erase(ite);  // Remove the element from the vector
+        
 
-            if(!remov){
-                throw runtime_error("imposible to remov");
-            }
         }
+    }
 
     int MagicalContainer::size(){
         return static_cast<int>(mystical_elements.size());
@@ -73,7 +79,6 @@ namespace ariel{
     vector<int>& MagicalContainer:: get_vector(){
         return mystical_elements;
     }
-
         const vector<int*>&  MagicalContainer::get_prime(){
         return prime_vector;
     }
