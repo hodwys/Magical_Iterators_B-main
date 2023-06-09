@@ -1,8 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <cmath>
-#include <stdexcept>
-#include <algorithm>
+
 #include "MagicalContainer.hpp"
 using namespace std;
 namespace ariel{
