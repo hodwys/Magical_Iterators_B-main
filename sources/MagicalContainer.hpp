@@ -34,27 +34,27 @@ namespace ariel{
 
             const vector<int*>& get_prime();
 
-            ~MagicalContainer()= default; 
-            MagicalContainer (const MagicalContainer &other){}
+            // ~MagicalContainer()= default; 
+            // MagicalContainer (const MagicalContainer &other){}
 
-            MagicalContainer& operator=(const MagicalContainer& other) {
-                    if (this != &other){
-                        this->mystical_elements = other.mystical_elements;
-                    }
-                    return *this;
-            }
+            // MagicalContainer& operator=(const MagicalContainer& other) {
+            //         if (this != &other){
+            //             this->mystical_elements = other.mystical_elements;
+            //         }
+            //         return *this;
+            // }
 
-                // Move constructor
-                MagicalContainer(MagicalContainer&& other) noexcept {
-                }
+                // // Move constructor
+                // MagicalContainer(MagicalContainer&& other) noexcept {
+                // }
 
-                // Move assignment operator
-                MagicalContainer& operator=(MagicalContainer&& other) noexcept {
-                    if (this != &other){
-                        this->mystical_elements = move(other.mystical_elements);
-                    }
-                    return *this;
-                }
+                // // Move assignment operator
+                // MagicalContainer& operator=(MagicalContainer&& other) noexcept {
+                //     if (this != &other){
+                //         this->mystical_elements = move(other.mystical_elements);
+                //     }
+                //     return *this;
+                // }
                 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 

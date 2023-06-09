@@ -10,7 +10,7 @@ MagicalContainer:: PrimeIterator& MagicalContainer::PrimeIterator:: begin(){
 }
 
 MagicalContainer::PrimeIterator& MagicalContainer::PrimeIterator:: end(){
-this->set_curr_index(static_cast<int>(this->get_container().get_prime().size()));
+this->set_curr_index((int)(this->get_container().get_prime().size()));
 return *this; 
 }
 

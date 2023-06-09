@@ -42,10 +42,10 @@ namespace ariel{
 
     void MagicalContainer::removeElement(int num_to_remove){
 
-        auto iter = std::lower_bound(mystical_elements.begin(),mystical_elements.end(),num_to_remove);
+        auto iter = lower_bound(mystical_elements.begin(),mystical_elements.end(),num_to_remove);
 
         if(iter == mystical_elements.end() || *iter != num_to_remove){
-            throw std::runtime_error("Elements not found");
+            throw runtime_error("Elements not found");
         }
         mystical_elements.erase(iter);
 

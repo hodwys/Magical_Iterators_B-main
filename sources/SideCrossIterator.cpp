@@ -4,7 +4,7 @@ namespace ariel{
 
                   
     MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator:: begin() {
-        this->set_curr_right(static_cast<int> (get_container().get_vector().size()-1));
+        this->set_curr_right((int) (get_container().get_vector().size()-1));
         this->set_curr_index(0);
         return *this;
     }

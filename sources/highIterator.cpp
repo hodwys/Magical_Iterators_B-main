@@ -7,7 +7,7 @@ namespace ariel{
     // Move assignment operator
     MagicalContainer::highIterator&  MagicalContainer::highIterator:: operator=(highIterator&& other) noexcept {
         if (this != &other) {
-        container = std::move(other.container);
+       // container = move(other.container);
         curr_index = other.curr_index;
         curr_right = other.curr_right;
         right =other.right;
@@ -15,8 +15,6 @@ namespace ariel{
         }
         return *this;
     }
-
-
 
     bool  MagicalContainer::highIterator:: get_right() const{
         return this->right;
@@ -75,8 +73,7 @@ namespace ariel{
         if(typeid(*this) != typeid(other)){
             throw runtime_error("diffrent iterators, error in ==");
         }
-
-        return (this->curr_index == other.curr_index);
+        return ((this->curr_index == other.curr_index));
     }
 
     // Inequality comparison operator
