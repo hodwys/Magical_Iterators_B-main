@@ -25,17 +25,14 @@ namespace ariel{
             MagicalContainer(){}
 
             void addElement(int num_to_add);
-
             void removeElement(int num_to_remove);
-
             int size();
 
             vector<int>& get_vector();
-
             const vector<int*>& get_prime();
 
             // ~MagicalContainer()= default; 
-            // MagicalContainer (const MagicalContainer &other){}
+            // MagicalContainer (const MagicalContainer &other):mystical_elements(other.mystical_elements), prime_vector(other.prime_vector) {}
 
             // MagicalContainer& operator=(const MagicalContainer& other) {
             //         if (this != &other){
@@ -43,18 +40,16 @@ namespace ariel{
             //         }
             //         return *this;
             // }
-
-                // // Move constructor
-                // MagicalContainer(MagicalContainer&& other) noexcept {
-                // }
-
-                // // Move assignment operator
-                // MagicalContainer& operator=(MagicalContainer&& other) noexcept {
-                //     if (this != &other){
-                //         this->mystical_elements = move(other.mystical_elements);
-                //     }
-                //     return *this;
-                // }
+            //     // Move constructor
+            //     MagicalContainer(MagicalContainer&& other) noexcept {
+            //     }
+            //     // Move assignment operator
+            //     MagicalContainer& operator=(MagicalContainer&& other) noexcept {
+            //         if (this != &other){
+            //             this->mystical_elements = move(other.mystical_elements);
+            //         }
+            //         return *this;
+            //     }
                 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -78,7 +73,15 @@ namespace ariel{
                 virtual ~highIterator() = default;
 
                 // Move constructor
-                highIterator(highIterator&& other) noexcept : container(other.container), curr_index(other.curr_index),curr_right(other.curr_right),right(other.right), left(other.left) {}
+                highIterator(highIterator&& other) noexcept : container(other.container), curr_index(other.curr_index),curr_right(other.curr_right),right(other.right), left(other.left) {
+
+                    if (this != &other) {
+                    other.curr_index = 0;
+                    other.curr_right = 0;
+                    other.left = false;
+                    other.right = false;
+                    }
+                }
 
                 // Move assignment operator
                 highIterator& operator=(highIterator&& other) noexcept;

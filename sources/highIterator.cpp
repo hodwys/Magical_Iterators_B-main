@@ -1,17 +1,21 @@
-
 #include "MagicalContainer.hpp"
 using namespace std;
 namespace ariel{
 
-
     // Move assignment operator
     MagicalContainer::highIterator&  MagicalContainer::highIterator:: operator=(highIterator&& other) noexcept {
         if (this != &other) {
-       // container = move(other.container);
+
+        container = other.container;
         curr_index = other.curr_index;
         curr_right = other.curr_right;
-        right =other.right;
-        left= other.left;
+        right = other.right;
+        left = other.left;
+
+        other.curr_index =0;
+        other.curr_right =0;
+        other.left = false;
+        other.right = false;
         }
         return *this;
     }
@@ -32,7 +36,6 @@ namespace ariel{
     int  MagicalContainer::highIterator:: get_curr_index() const{
         return this->curr_index;
     }
-
     void  MagicalContainer::highIterator:: set_curr_index(int other_index){
         this->curr_index = other_index;
     }
@@ -91,7 +94,9 @@ namespace ariel{
         if (this != &other) {
             this->container = other.container;
             this->curr_index = other.curr_index;
-            set_curr_right(other.get_curr_right());
+            this->curr_right = other.curr_right;
+            this->left = other.left;
+            this->right = other.right;
         }
         return *this;
     }

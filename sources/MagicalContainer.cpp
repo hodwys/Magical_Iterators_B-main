@@ -25,9 +25,9 @@ namespace ariel{
                 return;
             }
         }
-        auto place =lower_bound(mystical_elements.begin(), mystical_elements.end(), num_to_add);
+        auto place = lower_bound(mystical_elements.begin(), mystical_elements.end(), num_to_add);
 
-        mystical_elements.insert( place,num_to_add);
+        mystical_elements.insert(place, num_to_add);
 
         if(is_prime(num_to_add)){
 
@@ -39,11 +39,9 @@ namespace ariel{
 
         }
     }
-
+    
     void MagicalContainer::removeElement(int num_to_remove){
-
         auto iter = lower_bound(mystical_elements.begin(),mystical_elements.end(),num_to_remove);
-
         if(iter == mystical_elements.end() || *iter != num_to_remove){
             throw runtime_error("Elements not found");
         }
@@ -61,17 +59,13 @@ namespace ariel{
                 }
             }
             auto ite = prime_vector.begin() + plase;
-            delete *ite;  // Deallocate the memory for the element being removed
-            prime_vector.erase(ite);  // Remove the element from the vector
-        
-
+            delete *ite; 
+            prime_vector.erase(ite);
         }
     }
-
     int MagicalContainer::size(){
         return static_cast<int>(mystical_elements.size());
     }
-
     vector<int>& MagicalContainer:: get_vector(){
         return mystical_elements;
     }
